@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Личный кабинет — SportFuel</title>
+	<link rel="stylesheet" href="/assets/css/index.css">
+	<link rel="stylesheet" href="/assets/css/header-footer.css">
+	<link rel="stylesheet" href="/assets/css/profile.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="header">
+    <div class="header__inner">
+
+        <a href="index.html" class="header__logo">
+            <img src="/assets/images/systemImg/logo.svg" alt="SportFuel">
+        </a>
+
+        <input type="checkbox" id="burger" class="header__burger-checkbox" aria-label="Открыть меню">
+
+        <label for="burger" class="header__overlay"></label>
+
+        <label for="burger" class="header__burger-button">
+            <span class="header__burger-line"></span>
+            <span class="header__burger-line"></span>
+            <span class="header__burger-line"></span>
+        </label>
+
+        <nav class="header__nav">
+            <a href="index.html" class="header__nav-link">Главная</a>
+            <a href="katalog.html" class="header__nav-link">Каталог</a>
+            <a href="payment_and_delivery.html" class="header__nav-link">Доставка</a>
+            <a href="order.html" class="header__nav-link">Контакты</a>
+
+            <div class="header__search">
+                <input type="text" placeholder="Поиск" class="header__search-input">
+                <img src="/assets/images/systemImg/search.svg" alt="Поиск">
+            </div>
+
+            <a href="reg-in.html" class="header__icon-link">
+                <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
+            </a>
+            <a href="favorite.html" class="header__icon-link">
+                <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
+            </a>
+            <a href="cart.html" class="header__icon-link">
+                <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
+            </a>
+        </nav>
+
+        <div class="header__mobile-menu">
+            <div class="header__mobile-inner">
+                <a href="index.html" class="header__mobile-link">
+                    <img src="/assets/images/systemImg/home.svg" alt="Главная">
+                    <span>Главная</span>
+                </a>
+                <a href="katalog.html" class="header__mobile-link">
+                    <img src="/assets/images/systemImg/list.svg" alt="Каталог">
+                    <span>Каталог</span>
+                </a>
+                <a href="payment_and_delivery.html" class="header__mobile-link">
+                    <img src="/assets/images/systemImg/truck.svg" alt="Доставка">
+                    <span>Доставка</span>
+                </a>
+                <a href="order.html" class="header__mobile-link">
+                    <img src="/assets/images/systemImg/phone.svg" alt="Контакты">
+                    <span>Контакты</span>
+                </a>
+
+                <div class="header__mobile-controls">
+                    <div class="header__mobile-search">
+                        <input type="text" placeholder="Поиск...">
+                        <img src="/assets/images/systemImg/search.svg" alt="Поиск">
+                    </div>
+                    <div class="header__mobile-icons">
+                        <a href="reg-in.html" class="header__mobile-icon">
+                            <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
+                        </a>
+                        <a href="favorite.html" class="header__mobile-icon">
+                            <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
+                        </a>
+                        <a href="cart.html" class="header__mobile-icon">
+                            <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="profile">
+    <div class="profile__container">
+        <div class="profile__header">
+            <h1 class="profile__title">Личный кабинет</h1>
+            <p class="profile__subtitle">Управляйте своими данными и заказами</p>
+        </div>
+        <div class="profile__grid">
+            <div class="profile__info">
+                <div class="profile__card">
+                    <div class="profile__avatar">
+                        <img src="/assets/images/systemImg/profile.svg" alt="Аватар пользователя">
+                    </div>
+                    <h2 class="profile__name">Иванов Иван Иванович</h2>
+                    <p class="profile__email">ivanov@gmail.com</p>
+                    <div class="profile__stats">
+                        <div class="profile__stat-item">
+                            <span class="profile__stat-value">12</span>
+                            <span class="profile__stat-label">Заказов</span>
+                        </div>
+                        <div class="profile__stat-item">
+                            <span class="profile__stat-value">5</span>
+                            <span class="profile__stat-label">В избранном</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile__card">
+                    <h3 class="profile__card-title">Контактные данные</h3>
+                    <ul class="profile__contacts">
+                        <li class="profile__contact">
+                            <span class="profile__contact-label">ФИО:</span>
+                            <span class="profile__contact-value">Иванов Иван Иванович</span>
+                        </li>
+                        <li class="profile__contact">
+                            <span class="profile__contact-label">Email:</span>
+                            <span class="profile__contact-value">ivanov@gmail.com</span>
+                        </li>
+                        <li class="profile__contact">
+                            <span class="profile__contact-label">Телефон:</span>
+                            <span class="profile__contact-value">+7 (940) 238-91-43</span>
+                        </li>
+                        <li class="profile__contact">
+                            <span class="profile__contact-label">Адрес:</span>
+                            <span class="profile__contact-value">г. Томск, ул. Примерная, д. 123, кв. 45</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="profile__edit">
+                <div class="profile__card">
+                    <h3 class="profile__card-title">Редактировать профиль</h3>
+                    <form class="profile__form">
+                        <div class="profile__form-group">
+                            <label for="fullname" class="profile__label">ФИО</label>
+                            <input type="text" id="fullname" class="profile__input" value="Иванов Иван Иванович">
+                        </div>
+                        <div class="profile__form-group">
+                            <label for="email" class="profile__label">Email</label>
+                            <input type="email" id="email" class="profile__input" value="ivanov@gmail.com">
+                        </div>
+                        <div class="profile__form-group">
+                            <label for="phone" class="profile__label">Телефон</label>
+                            <input type="tel" id="phone" class="profile__input" value="+7 (940) 238-91-43">
+                        </div>
+                        <div class="profile__form-group">
+                            <label for="address" class="profile__label">Адрес доставки</label>
+                            <textarea id="address" class="profile__textarea">г. Томск, ул. Примерная, д. 123, кв. 45</textarea>
+                        </div>
+                        <button type="submit" class="profile__btn">Сохранить изменения</button>
+                    </form>
+                </div>
+
+                <div class="profile__card profile__card--danger">
+					<h3 class="profile__card-title">Безопасность</h3>
+					<button type="button" class="profile__btn profile__btn--outline">Изменить пароль</button>
+
+					<a href="reg-in.html" class="profile__btn profile__btn--danger">
+						Выйти из аккаунта
+					</a>
+				</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__column">
+            <img src="/assets/images/systemImg/logo.svg" alt="SportFuel" class="footer__logo">
+        </div>
+        <div class="footer__column">
+            <h3 class="footer__title">Разделы сайта</h3>
+            <a href="index.html" class="footer__link">Главная</a>
+            <a href="katalog.html" class="footer__link">Каталог</a>
+            <a href="payment_and_delivery.html" class="footer__link">Доставка</a>
+            <a href="order.html" class="footer__link">Контакты</a>
+        </div>
+        <div class="footer__column">
+            <h3 class="footer__title">Контактная информация</h3>
+            <a href="tel:+79402389143" class="footer__link">Телефон: +7 (940) 238-91-43</a>
+            <a href="mailto:info@sportfuel.ru" class="footer__link">Email: info@sportfuel.ru</a>
+            <a href="#" class="footer__link">Мы в интернете</a>
+            <div class="footer__socials">
+                <img src="/assets/images/systemImg/Сферум_Logo.svg" alt="Сферум">
+                <img src="/assets/images/systemImg/Max_logo.svg" alt="Max">
+                <img src="/assets/images/systemImg/Rutube.svg" alt="Rutube">
+                <img src="/assets/images/systemImg/VK_Logo 1.svg" alt="VK">
+            </div>
+        </div>
+        <div class="footer__column">
+            <h3 class="footer__title">Подпишись на нашу рассылку</h3>
+            <div class="footer__subscribe">
+                <input type="email" placeholder="Электронная почта">
+                <button>Подписаться</button>
+            </div>
+            <p class="footer__subscribe-text">Ты всегда будешь в курсе новинок и выгодных предложений!</p>
+        </div>
+    </div>
+    <div class="footer__copyright">©2025 SportFuel. Все права защищены.</div>
+</footer>
+
+</body>
+</html>
