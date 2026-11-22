@@ -22,18 +22,26 @@
         <a href="reg-in.html" class="auth__tab">Регистрация</a>
       </div>
 
-      <form class="auth__form">
-        <label class="auth__label">Email</label>
-        <input type="email" placeholder="your@email.com" class="auth__input">
+      <form class="auth__form" method="POST" action="{{ route('login.store') }}">
+        @csrf
 
-        <label class="auth__label">Пароль</label>
-        <input type="password" placeholder="••••••••" class="auth__input">
+        @if ($errors->any())
+          <ul role="alert">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        @endif
 
-        <button type="submit" class="auth__button auth__button--login">
-          Войти
-        </button>
+        <label for="login" class="auth__label">Логин</label>
+        <input id="login" name="login" type="text" value="{{ old('login') }}"
+              maxlength="30" autocomplete="username" class="auth__input" required>
 
-        <a href="#" class="auth__forgot">Забыли пароль?</a>
+        <label for="password" class="auth__label">Пароль</label>
+        <input id="password" name="password" type="password"
+              maxlength="72" autocomplete="current-password" class="auth__input" required>
+
+        <button type="submit" class="auth__button auth__button--login">Войти</button>
       </form>
 
       <p class="auth__or">ИЛИ ВОЙТИ ЧЕРЕЗ</p>

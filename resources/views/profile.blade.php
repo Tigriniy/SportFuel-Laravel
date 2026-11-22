@@ -104,7 +104,11 @@
                     <div class="profile__avatar">
                         <img src="/assets/images/systemImg/profile.svg" alt="Аватар пользователя">
                     </div>
-                    <h2 class="profile__name">Иванов Иван Иванович</h2>
+                    <h2 class="profile__name">
+                        {{ auth()->user()->last_name }}
+                        {{ auth()->user()->first_name }}
+                        {{ auth()->user()->patronymic }}
+                    </h2>
                     <p class="profile__email">ivanov@gmail.com</p>
                     <div class="profile__stats">
                         <div class="profile__stat-item">
@@ -168,9 +172,12 @@
 					<h3 class="profile__card-title">Безопасность</h3>
 					<button type="button" class="profile__btn profile__btn--outline">Изменить пароль</button>
 
-					<a href="reg-in.html" class="profile__btn profile__btn--danger">
-						Выйти из аккаунта
-					</a>
+					<form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="profile__btn profile__btn--danger">
+                            Выйти из аккаунта
+                        </button>
+                    </form>
 				</div>
             </div>
         </div>

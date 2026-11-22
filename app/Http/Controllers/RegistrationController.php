@@ -29,6 +29,6 @@ class RegistrationController extends Controller
             'patronymic'=>'отчество', 'email'=>'email', 'phone'=>'телефон', 'password'=>'пароль',
         ]);
         User::create($data);
-        return redirect()->route('register')->with('success', 'Учётная запись создана. Вход будет подключён следующим шагом.');
+        return redirect()->route('register')->with('success', 'Учётная запись создана. Теперь можно войти по логину и паролю.');
     }
 }
