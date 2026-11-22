@@ -43,15 +43,61 @@
             <label for="composition">Состав</label>
             <textarea id="composition" name="composition" rows="3" maxlength="10000">{{ old('composition', $product->composition) }}</textarea>
 
-            <label for="specs">Характеристики (по одной на строку)</label>
-            <textarea id="specs" name="specs" rows="3" maxlength="5000">{{ old('specs', implode("\n", $product->specs ?? [])) }}</textarea>
+            <fieldset class="product-editor-group" data-repeat>
+                <legend>Характеристики</legend>
+                <div data-rows>
+                    @foreach ((array) old('specs', $product->specificationRows() ?: [[]]) as $row)
+                        @include('admin.products.spec-row', ['spec' => $row, 'index' => $loop->index])
+                    @endforeach
+                </div>
+                <template>@include('admin.products.spec-row', ['spec' => [], 'index' => '__INDEX__'])</template>
+                <button class="button-text" type="button" data-add>Добавить характеристику</button>
+            </fieldset>
 
-            @if ($product->exists && $product->cover)
-                <img class="cover-preview" src="{{ asset($product->cover->path) }}" alt="{{ $product->name }}">
-                <label class="check"><input type="checkbox" name="remove_cover" value="1" @checked(old('remove_cover'))> Удалить текущее изображение</label>
+            <fieldset class="product-editor-group" data-repeat>
+                <legend>Варианты упаковки</legend>
+                <div data-rows>
+                    @foreach ((array) old('variants', $product->variants->toArray()) as $row)
+                        @include('admin.products.variant-row', ['variant' => $row, 'index' => $loop->index])
+                    @endforeach
+                </div>
+                <template>@include('admin.products.variant-row', ['variant' => [], 'index' => '__INDEX__'])</template>
+                <button class="button-text" type="button" data-add>Добавить вариант</button>
+            </fieldset>
+
+            @if ($relatedOptions->isNotEmpty())
+                <label for="related_ids">Связанные товары (до 8)</label>
+                <select id="related_ids" name="related_ids[]" multiple size="5" aria-describedby="related-help">
+                    @foreach ($relatedOptions as $option)
+                        <option value="{{ $option->id }}" @selected(in_array($option->id, (array) old('related_ids', $product->relatedProducts->modelKeys())))>{{ $option->name }}</option>
+                    @endforeach
+                </select>
+                <small id="related-help">Для выбора нескольких товаров удерживай Ctrl или Command.</small>
             @endif
-            <label for="cover">Изображение (JPG, PNG или WebP, до 2 МБ)</label>
-            <input id="cover" name="cover" type="file" accept="image/jpeg,image/png,image/webp">
+
+            <fieldset class="product-editor-group">
+                <legend>Фото товара</legend>
+                @foreach ($product->images as $photo)
+                    <div class="product-editor-photo">
+                        <img class="cover-preview" src="{{ asset($photo->path) }}" alt="Фото {{ $loop->iteration }} «{{ $product->name }}»">
+                        <div>
+                            <label class="check">
+                                <input type="radio" name="cover_id" value="{{ $photo->id }}"
+                                       @checked((string) old('cover_id', $product->images->firstWhere('is_primary', true)?->id) === (string) $photo->id)>
+                                Обложка
+                            </label>
+                            <label class="check">
+                                <input type="checkbox" name="remove_images[]" value="{{ $photo->id }}"
+                                       @checked(in_array($photo->id, (array) old('remove_images', [])))>
+                                Удалить
+                            </label>
+                        </div>
+                    </div>
+                @endforeach
+                <label for="photos">Добавить фото (JPG, PNG или WebP)</label>
+                <input id="photos" name="photos[]" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+                <small>До 8 фото на товар, до 2 МБ каждое. Первое фото становится обложкой, если она ещё не выбрана.</small>
+            </fieldset>
 
             <input type="hidden" name="is_active" value="0">
             <label class="check"><input type="checkbox" name="is_active" value="1" @checked(old('is_active', $product->is_active))> Показывать в каталоге магазина</label>
@@ -60,4 +106,5 @@
         </form>
     @endif
     <p><a href="{{ route('admin.products.index') }}">Назад к товарам</a></p>
+    <script src="{{ asset('assets/js/product-editor.js') }}" defer></script>
 @endsection

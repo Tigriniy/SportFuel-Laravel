@@ -170,23 +170,7 @@
 
                 <div class="catalog__grid">
                     @forelse ($products as $product)
-                        <div class="product-card">
-                            <div class="product-card__inner">
-                                <div class="product-card__link">
-                                    @if ($product->cover)
-                                        <img src="{{ asset($product->cover->path) }}" alt="{{ $product->cover->alt ?? $product->name }}" class="product-card__image" loading="lazy">
-                                    @endif
-                                </div>
-                                <div class="product-card__link">
-                                    <p class="product-card__name">{{ $product->name }}</p>
-                                    <p class="product-card__brand">{{ $product->brand->name }}</p>
-                                </div>
-                                <div class="product-card__bottom">
-                                    <span class="product-card__price">{{ number_format($product->price, 2, ',', ' ') }} руб.</span>
-                                    <span>{{ $product->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <x-product-tile :product="$product" />
                     @empty
                         <p>В каталоге пока нет товаров.</p>
                     @endforelse

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BCAA 5000 - 400 КАПС | Optimum Nutrition</title>
+  <title>{{ $product->name }} | SportFuel</title>
   <link rel="stylesheet" href="/assets/css/conf.css">
   <link rel="stylesheet" href="/assets/css/header-footer.css">
   <link rel="stylesheet" href="/assets/css/carta-tovara.css">
@@ -17,7 +17,7 @@
 <!-- === HEADER ===== -->
 <header class="header">
   <div class="header__inner">
-    <a href="index.html" class="header__logo">
+    <a href="{{ url('index.html') }}" class="header__logo">
       <img src="/assets/images/systemImg/logo.svg" alt="SportFuel">
     </a>
 
@@ -30,42 +30,42 @@
     </label>
 
     <nav class="header__nav">
-      <a href="index.html" class="header__nav-link">Главная</a>
-      <a href="katalog.html" class="header__nav-link">Каталог</a>
-      <a href="payment_and_delivery.html" class="header__nav-link">Доставка</a>
-      <a href="order.html" class="header__nav-link">Контакты</a>
+      <a href="{{ url('index.html') }}" class="header__nav-link">Главная</a>
+      <a href="{{ url('katalog.html') }}" class="header__nav-link">Каталог</a>
+      <a href="{{ url('payment_and_delivery.html') }}" class="header__nav-link">Доставка</a>
+      <a href="{{ url('order.html') }}" class="header__nav-link">Контакты</a>
 
       <div class="header__search">
         <input type="text" placeholder="Поиск" class="header__search-input">
         <img src="/assets/images/systemImg/search.svg" alt="Поиск">
       </div>
 
-      <a href="profile.html" class="header__icon-link">
+      <a href="{{ url('profile.html') }}" class="header__icon-link">
         <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
       </a>
-      <a href="favorite.html" class="header__icon-link">
+      <a href="{{ url('favorite.html') }}" class="header__icon-link">
         <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
       </a>
-      <a href="cart.html" class="header__icon-link">
+      <a href="{{ url('cart.html') }}" class="header__icon-link">
         <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
       </a>
     </nav>
 
     <div class="header__mobile-menu">
       <div class="header__mobile-inner">
-        <a href="index.html" class="header__mobile-link">
+        <a href="{{ url('index.html') }}" class="header__mobile-link">
           <img src="/assets/images/systemImg/home.svg" alt="Главная">
           <span>Главная</span>
         </a>
-        <a href="katalog.html" class="header__mobile-link">
+        <a href="{{ url('katalog.html') }}" class="header__mobile-link">
           <img src="/assets/images/systemImg/list.svg" alt="Каталог">
           <span>Каталог</span>
         </a>
-        <a href="payment_and_delivery.html" class="header__mobile-link">
+        <a href="{{ url('payment_and_delivery.html') }}" class="header__mobile-link">
           <img src="/assets/images/systemImg/truck.svg" alt="Доставка">
           <span>Доставка</span>
         </a>
-        <a href="order.html" class="header__mobile-link">
+        <a href="{{ url('order.html') }}" class="header__mobile-link">
           <img src="/assets/images/systemImg/phone.svg" alt="Контакты">
           <span>Контакты</span>
         </a>
@@ -76,13 +76,13 @@
             <img src="/assets/images/systemImg/search.svg" alt="Поиск">
           </div>
           <div class="header__mobile-icons">
-            <a href="reg-in.html" class="header__mobile-icon">
+            <a href="{{ route('profile') }}" class="header__mobile-icon">
               <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
             </a>
-            <a href="favorite.html" class="header__mobile-icon">
+            <a href="{{ url('favorite.html') }}" class="header__mobile-icon">
               <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
             </a>
-            <a href="cart.html" class="header__mobile-icon">
+            <a href="{{ url('cart.html') }}" class="header__mobile-icon">
               <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
             </a>
           </div>
@@ -95,135 +95,112 @@
 <!-- ========== MAIN ========== -->
 <main class="product">
   <div class="product__container">
-    <!-- ==== путь к странице ==== -->
-    <nav class="breadcrumbs">
+    <nav class="breadcrumbs" aria-label="Путь к товару">
       <ol class="breadcrumbs__list">
-        <li class="breadcrumbs__item">
-          <a href="index.html" class="breadcrumbs__link">Главная</a>
-        </li>
-        <li class="breadcrumbs__item">
-          <a href="katalog.html" class="breadcrumbs__link">Каталог</a>
-        </li>
-        <li class="breadcrumbs__item">
-          <a href="#" class="breadcrumbs__link">BCAA</a>
-        </li>
-        <li class="breadcrumbs__item">
-          <span class="breadcrumbs__current">Optimum Nutrition</span>
-        </li>
+        <li class="breadcrumbs__item"><a href="{{ route('home') }}" class="breadcrumbs__link">Главная</a></li>
+        <li class="breadcrumbs__item"><a href="{{ route('catalog') }}" class="breadcrumbs__link">Каталог</a></li>
+        <li class="breadcrumbs__item"><span class="breadcrumbs__current" aria-current="page">{{ $product->name }}</span></li>
       </ol>
     </nav>
 
     <section class="product__main">
-      <div class="product__image">
-        <img src="/assets/images/product/product-bcaa.png" alt="BCAA 5000 Powder от Optimum Nutrition">
+      <div class="product__image" data-gallery>
+        @if ($product->images->isNotEmpty())
+          @php($cover = $product->images->first())
+          <img class="product__main-photo" data-main-photo src="{{ asset($cover->path) }}" alt="{{ $cover->alt ?? $product->name }}">
+          @if ($product->images->count() > 1)
+            <div class="product__thumbnails" aria-label="Фото товара">
+              @foreach ($product->images as $image)
+                <button class="product__thumbnail" type="button" data-photo="{{ asset($image->path) }}"
+                        data-alt="{{ $image->alt ?? $product->name }}" aria-label="Показать фото {{ $loop->iteration }}"
+                        aria-pressed="{{ $loop->first ? 'true' : 'false' }}">
+                  <img src="{{ asset($image->path) }}" alt="" loading="lazy">
+                </button>
+              @endforeach
+            </div>
+          @endif
+        @else
+          <p class="product__placeholder">Фото пока нет</p>
+        @endif
       </div>
 
       <div class="product__info">
-        <div class="product__info-top">
-          <span class="product__info-sku">Артикул: 0043194</span>
-          <h1 class="product__info-title">BCAA 5000 - 400 КАПС</h1>
-          <div class="product__info-rating">
-            <div class="product__info-stars">
-              <img src="/assets/images/systemImg/star.svg" alt="★">
-              <img src="/assets/images/systemImg/star.svg" alt="★">
-              <img src="/assets/images/systemImg/star.svg" alt="★">
-              <img src="/assets/images/systemImg/star.svg" alt="★">
-              <img src="/assets/images/systemImg/star.svg" alt="★">
+        <h1 class="product__info-title">{{ $product->name }}</h1>
+        <p class="product__price">{{ number_format($product->price, 2, ',', ' ') }} ₽</p>
+        <p>{{ $product->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</p>
+        <p class="product__info-rating-count">Оценок пока нет</p>
+
+        <dl class="product__specs">
+          <div class="product__specs-row">
+            <dt class="product__specs-label">Категория</dt>
+            <dd class="product__specs-value">{{ $product->category->name }}</dd>
+          </div>
+          <div class="product__specs-row">
+            <dt class="product__specs-label">Бренд</dt>
+            <dd class="product__specs-value">{{ $product->brand->name }}</dd>
+          </div>
+          @foreach ($product->specificationRows() as $spec)
+            <div class="product__specs-row">
+              <dt class="product__specs-label">{{ $spec['name'] }}</dt>
+              <dd class="product__specs-value">{{ $spec['value'] }}</dd>
             </div>
-            <span class="product__info-rating-value">4.8</span>
-            <span class="product__info-rating-count">(12 отзывов)</span>
-          </div>
-          <div class="product__info-social">
-            <button class="product__info-social-btn" aria-label="Поделиться">
-              <img src="/assets/images/systemImg/Heart_favorite.svg" alt="Избранное">
-            </button>
-          </div>
-        </div>
+          @endforeach
+        </dl>
 
-        <div class="product__specs">
-          <div class="product__specs-row">
-            <span class="product__specs-label">Категория</span>
-            <span class="product__specs-value">BCAA</span>
+        @if ($product->variants->isNotEmpty())
+          <div class="product__variations">
+            <h2 class="product__variations-title">Варианты упаковки</h2>
+            <ul class="product__variations-options">
+              @foreach ($product->variants as $variant)
+                <li class="product__variations-option product__variant-detail">
+                  <span class="product__variations-option-quantity">{{ $variant->title }}</span>
+                  <span class="product__variations-option-price">{{ number_format($variant->price, 2, ',', ' ') }} ₽</span>
+                  <small>{{ $variant->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</small>
+                </li>
+              @endforeach
+            </ul>
           </div>
-          <div class="product__specs-row">
-            <span class="product__specs-label">Поддерживаемая цель</span>
-            <span class="product__specs-value">Увеличение энергии<br>Набор мышечной массы<br>Сжигание жира</span>
-          </div>
-          <div class="product__specs-row">
-            <span class="product__specs-label">Бренд</span>
-            <span class="product__specs-value">Optimum Nutrition</span>
-          </div>
-        </div>
-
-        <div class="product__variations">
-          <h2 class="product__variations-title">Другие варианты продукта</h2>
-          <div class="product__variations-options">
-            <button class="product__variations-option">
-              <span class="product__variations-option-quantity">60 капс.</span>
-              <span class="product__variations-option-price">690 ₽</span>
-            </button>
-            <button class="product__variations-option">
-              <span class="product__variations-option-quantity">200 капс.</span>
-              <span class="product__variations-option-price">1800 ₽</span>
-            </button>
-            <button class="product__variations-option">
-              <span class="product__variations-option-quantity">400 капс.</span>
-              <span class="product__variations-option-price">2500 ₽</span>
-            </button>
-          </div>
-        </div>
-
-        <button class="product__action-btn product__action-btn--primary">
-          Добавить в корзину
-        </button>
+        @endif
       </div>
     </section>
 
-    <section class="product__details">
-      <div class="product__details-section">
-        <h2 class="product__details-section-title">Описание</h2>
-        <div class="product__details-content">
-          <p>BCAA 5000 Powder от Optimum Nutrition — это добавка, состоящая из равновесных аминокислот BCAA, которые играют ключевую роль в поддержании и росте мышечной массы.</p>
-          <p>Каждая порция содержит 1000 мг BCAA, что помогает стимулировать синтез белка в мышцах и предотвратить их разрушение.</p>
-          <p>Аминокислоты ВСАА 1000 Caps рекомендуется принимать утром и/или за 30 минут до или сразу после тренировки, что делает их идвальным выбором для поддержания анаболического состояния в течение дня.</p>
-        </div>
-      </div>
+    @if ($product->description || $product->composition)
+      <section class="product__details">
+        @if ($product->description)
+          <div class="product__details-section">
+            <h2 class="product__details-section-title">Описание</h2>
+            <div class="product__details-content"><p class="product__description">{{ $product->description }}</p></div>
+          </div>
+        @endif
+        @if ($product->composition)
+          <div class="product__details-section">
+            <h2 class="product__details-section-title">Состав продукта</h2>
+            <div class="product__details-content"><p class="product__description">{{ $product->composition }}</p></div>
+          </div>
+        @endif
+      </section>
+    @endif
 
-      <div class="product__details-section">
-        <h2 class="product__details-section-title">Состав продукта</h2>
-        <table class="product__composition">
-          <thead>
-            <tr>
-              <th>Компонент</th>
-              <th>Содержание</th>
-              <th>Роль</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Валин</td>
-              <td>250 мг.</td>
-              <td>Помогает поддерживать баланс азота...</td>
-            </tr>
-            <tr>
-              <td>Изолейцин</td>
-              <td>250 мг.</td>
-              <td>Обеспечивает энергию...</td>
-            </tr>
-            <tr>
-              <td>Лейцин</td>
-              <td>500 мг.</td>
-              <td>Стимулирует синтез белка...</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="product__composition-note">
-          Размер порции: 2 капс.
-        </div>
-      </div>
-    </section>
+    @if ($product->relatedProducts->isNotEmpty())
+      <section class="product__related">
+        <h2 class="product__details-section-title">Связанные товары</h2>
+        <ul class="product__related-list">
+          @foreach ($product->relatedProducts as $related)
+            <li>
+              <a href="{{ route('products.show', $related->slug) }}" class="product__related-link">
+                @if ($related->cover)
+                  <img src="{{ asset($related->cover->path) }}" alt="" loading="lazy">
+                @endif
+                <span>{{ $related->name }}</span>
+              </a>
+            </li>
+          @endforeach
+        </ul>
+      </section>
+    @endif
   </div>
 </main>
+<script src="{{ asset('assets/js/product-gallery.js') }}" defer></script>
 
 <!-- ===== FOOTER ==== -->
 <footer class="footer">
@@ -233,10 +210,10 @@
     </div>
     <div class="footer__column">
       <h3 class="footer__title">Разделы сайта</h3>
-      <a href="index.html" class="footer__link">Главная</a>
-      <a href="katalog.html" class="footer__link">Каталог</a>
-      <a href="payment_and_delivery.html" class="footer__link">Доставка</a>
-      <a href="order.html" class="footer__link">Контакты</a>
+      <a href="{{ url('index.html') }}" class="footer__link">Главная</a>
+      <a href="{{ url('katalog.html') }}" class="footer__link">Каталог</a>
+      <a href="{{ url('payment_and_delivery.html') }}" class="footer__link">Доставка</a>
+      <a href="{{ url('order.html') }}" class="footer__link">Контакты</a>
     </div>
     <div class="footer__column">
       <h3 class="footer__title">Контактная информация</h3>

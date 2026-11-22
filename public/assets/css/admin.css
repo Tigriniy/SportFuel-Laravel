@@ -45,3 +45,26 @@ td, th { padding: 0.65rem; border-bottom: 1px solid #373737; vertical-align: top
 .notice { border: 1px solid #6bb994; border-radius: 0.4rem; padding: 0.65rem 1rem; }
 .notice-error { border-color: #ff80b0; padding-left: 2rem; }
 .cover-preview { width: 8rem; height: 8rem; object-fit: contain; }
+
+.product-editor-group {
+  min-width: 0;
+  margin-block: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid #5a5a5a;
+  border-radius: 0.45rem;
+}
+.product-editor-group legend { padding-inline: 0.3rem; font-weight: 700; }
+.product-editor-row {
+  display: grid;
+  gap: 0.5rem;
+  align-items: end;
+  margin-bottom: 0.65rem;
+}
+.product-editor-row--spec { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+.product-editor-row--variant { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) auto; }
+.product-editor-row button { justify-self: start; padding-bottom: 0.65rem; }
+.product-editor-photo { display: flex; gap: 1rem; align-items: center; margin-block: 0.5rem; }
+.product-editor-photo img { border-radius: 12px; }
+@media (max-width: 500px) {
+  .product-editor-row { grid-template-columns: 1fr; }
+}

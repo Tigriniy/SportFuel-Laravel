@@ -9,8 +9,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'index');
+Route::get('/', [CatalogController::class, 'home'])->name('home');
+Route::get('/index.html', [CatalogController::class, 'home']);
 Route::get('/katalog.html', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/products/{product:slug}', [CatalogController::class, 'show'])->name('products.show');
+Route::redirect('/carta-tovara.html', '/katalog.html');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.session', 'can:manage-catalog'])->group(function () {
     Route::redirect('/', '/admin/products')->name('home');
@@ -61,6 +64,6 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-foreach (['index', 'carta-tovara', 'cart', 'favorite', 'order', 'payment_and_delivery'] as $page) {
+foreach (['cart', 'favorite', 'order', 'payment_and_delivery'] as $page) {
     Route::view('/'.$page.'.html', $page);
 }

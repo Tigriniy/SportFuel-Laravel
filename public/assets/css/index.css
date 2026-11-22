@@ -171,6 +171,16 @@ button { cursor: pointer; border: none; background: transparent; font-family: in
   width: 100%;
   margin-top: 10px;
   object-fit: cover;
+  border-radius: 25px;
+}
+
+.product-card__placeholder {
+  display: grid;
+  place-items: center;
+  min-height: 10rem;
+  margin-top: 10px;
+  background: #232323;
+  border-radius: 25px;
 }
 
 .product-card__rating {
