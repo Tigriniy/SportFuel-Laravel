@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,15 @@ Route::middleware('guest')->group(function () {
         ->name('password.update');
 });
 
-Route::view('/profile.html', 'profile')
-    ->middleware('auth')
-    ->name('profile');
+Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::get('/profile.html', [ProfileController::class, 'show'])->name('profile');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->middleware('throttle:10,1')
+        ->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])
+        ->middleware('throttle:10,1')
+        ->name('profile.password.update');
+});
 
 Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')

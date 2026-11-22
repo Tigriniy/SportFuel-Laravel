@@ -96,7 +96,10 @@
     <div class="profile__container">
         <div class="profile__header">
             <h1 class="profile__title">Личный кабинет</h1>
-            <p class="profile__subtitle">Управляйте своими данными и заказами</p>
+            <p class="profile__subtitle">Управляйте личными данными и паролем</p>
+            @if (session('status'))
+                <p class="profile__subtitle" role="status">{{ session('status') }}</p>
+            @endif
         </div>
         <div class="profile__grid">
             <div class="profile__info">
@@ -104,81 +107,129 @@
                     <div class="profile__avatar">
                         <img src="/assets/images/systemImg/profile.svg" alt="Аватар пользователя">
                     </div>
-                    <h2 class="profile__name">
-                        {{ auth()->user()->last_name }}
-                        {{ auth()->user()->first_name }}
-                        {{ auth()->user()->patronymic }}
-                    </h2>
-                    <p class="profile__email">ivanov@gmail.com</p>
-                    <div class="profile__stats">
-                        <div class="profile__stat-item">
-                            <span class="profile__stat-value">12</span>
-                            <span class="profile__stat-label">Заказов</span>
-                        </div>
-                        <div class="profile__stat-item">
-                            <span class="profile__stat-value">5</span>
-                            <span class="profile__stat-label">В избранном</span>
-                        </div>
-                    </div>
+                    <h2 class="profile__name">{{ $fullName }}</h2>
+                    <p class="profile__email">{{ $user->email }}</p>
                 </div>
-
                 <div class="profile__card">
                     <h3 class="profile__card-title">Контактные данные</h3>
                     <ul class="profile__contacts">
                         <li class="profile__contact">
-                            <span class="profile__contact-label">ФИО:</span>
-                            <span class="profile__contact-value">Иванов Иван Иванович</span>
+                            <span class="profile__contact-label">Логин</span>
+                            <span class="profile__contact-value">{{ $user->login }}</span>
                         </li>
                         <li class="profile__contact">
-                            <span class="profile__contact-label">Email:</span>
-                            <span class="profile__contact-value">ivanov@gmail.com</span>
+                            <span class="profile__contact-label">Телефон</span>
+                            <span class="profile__contact-value">{{ $user->phone }}</span>
                         </li>
                         <li class="profile__contact">
-                            <span class="profile__contact-label">Телефон:</span>
-                            <span class="profile__contact-value">+7 (940) 238-91-43</span>
-                        </li>
-                        <li class="profile__contact">
-                            <span class="profile__contact-label">Адрес:</span>
-                            <span class="profile__contact-value">г. Томск, ул. Примерная, д. 123, кв. 45</span>
+                            <span class="profile__contact-label">Адрес доставки</span>
+                            <span class="profile__contact-value">{{ $user->delivery_address ?? 'Не указан' }}</span>
                         </li>
                     </ul>
                 </div>
             </div>
+
             <div class="profile__edit">
                 <div class="profile__card">
                     <h3 class="profile__card-title">Редактировать профиль</h3>
-                    <form class="profile__form">
+                    @php($profileErrors = array_diff($errors->profile->all(), $errors->profile->get('current_password')))
+                    @if ($profileErrors)
+                        <ul role="alert">
+                            @foreach ($profileErrors as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                    <form class="profile__form" method="POST" action="{{ route('profile.update') }}">
+                        @csrf
+                        @method('PATCH')
+
                         <div class="profile__form-group">
-                            <label for="fullname" class="profile__label">ФИО</label>
-                            <input type="text" id="fullname" class="profile__input" value="Иванов Иван Иванович">
+                            <label for="last_name" class="profile__label">Фамилия</label>
+                            <input type="text" id="last_name" name="last_name" class="profile__input"
+                                   value="{{ old('last_name', $user->last_name) }}" maxlength="30" autocomplete="family-name" required>
+                        </div>
+                        <div class="profile__form-group">
+                            <label for="first_name" class="profile__label">Имя</label>
+                            <input type="text" id="first_name" name="first_name" class="profile__input"
+                                   value="{{ old('first_name', $user->first_name) }}" maxlength="30" autocomplete="given-name" required>
+                        </div>
+                        <div class="profile__form-group">
+                            <label for="patronymic" class="profile__label">Отчество</label>
+                            <input type="text" id="patronymic" name="patronymic" class="profile__input"
+                                   value="{{ old('patronymic', $user->patronymic) }}" maxlength="30" required>
                         </div>
                         <div class="profile__form-group">
                             <label for="email" class="profile__label">Email</label>
-                            <input type="email" id="email" class="profile__input" value="ivanov@gmail.com">
+                            <input type="email" id="email" name="email" class="profile__input"
+                                   value="{{ $user->email }}" maxlength="30" autocomplete="email"
+                                   aria-describedby="profile_email_help" required>
+                            <p class="profile__contact-value" id="profile_email_help">
+                                Для смены email введи текущий пароль перед сохранением.
+                            </p>
                         </div>
                         <div class="profile__form-group">
-                            <label for="phone" class="profile__label">Телефон</label>
-                            <input type="tel" id="phone" class="profile__input" value="+7 (940) 238-91-43">
+                            <label for="phone" class="profile__label">Телефон (до 11 цифр)</label>
+                            <input type="tel" id="phone" name="phone" class="profile__input" inputmode="numeric"
+                                   value="{{ old('phone', $user->phone) }}" maxlength="11" pattern="[0-9]{1,11}" autocomplete="tel" required>
                         </div>
                         <div class="profile__form-group">
-                            <label for="address" class="profile__label">Адрес доставки</label>
-                            <textarea id="address" class="profile__textarea">г. Томск, ул. Примерная, д. 123, кв. 45</textarea>
+                            <label for="delivery_address" class="profile__label">Адрес доставки</label>
+                            <textarea id="delivery_address" name="delivery_address" class="profile__textarea"
+                                      maxlength="255" autocomplete="street-address">{{ old('delivery_address', $user->delivery_address) }}</textarea>
+                        </div>
+                        <div class="profile__form-group">
+                            <label for="email_current_password" class="profile__label">Текущий пароль (при смене email)</label>
+                            <input type="password" id="email_current_password" name="current_password"
+                                   class="profile__input" autocomplete="current-password" maxlength="72"
+                                   @if ($errors->profile->has('current_password')) aria-invalid="true" aria-describedby="profile_email_password_error" @endif>
+                            @error('current_password', 'profile')
+                                <p class="profile__contact-value" id="profile_email_password_error" role="alert">{{ $message }}</p>
+                            @enderror
                         </div>
                         <button type="submit" class="profile__btn">Сохранить изменения</button>
                     </form>
                 </div>
 
                 <div class="profile__card profile__card--danger">
-					<h3 class="profile__card-title">Безопасность</h3>
-					<button type="button" class="profile__btn profile__btn--outline">Изменить пароль</button>
+                    <h3 class="profile__card-title">Безопасность</h3>
+                    <details @if ($errors->password->any()) open @endif>
+                        <summary class="profile__btn profile__btn--outline">Изменить пароль</summary>
+                        @if ($errors->password->any())
+                            <ul role="alert">
+                                @foreach ($errors->password->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                        <form class="profile__form" method="POST" action="{{ route('profile.password.update') }}">
+                            @csrf
+                            @method('PUT')
 
-					<form method="POST" action="{{ route('logout') }}">
+                            <div class="profile__form-group">
+                                <label for="current_password" class="profile__label">Текущий пароль</label>
+                                <input type="password" id="current_password" name="current_password"
+                                       class="profile__input" autocomplete="current-password" maxlength="72" required>
+                            </div>
+                            <div class="profile__form-group">
+                                <label for="password" class="profile__label">Новый пароль</label>
+                                <p class="profile__contact-value" id="password_help">От 10 символов: латинские буквы, цифры и спецсимволы.</p>
+                                <input type="password" id="password" name="password" class="profile__input"
+                                       autocomplete="new-password" aria-describedby="password_help" minlength="10" maxlength="72" required>
+                            </div>
+                            <div class="profile__form-group">
+                                <label for="password_confirmation" class="profile__label">Повторите новый пароль</label>
+                                <input type="password" id="password_confirmation" name="password_confirmation"
+                                       class="profile__input" autocomplete="new-password" minlength="10" maxlength="72" required>
+                            </div>
+                            <button type="submit" class="profile__btn">Сохранить пароль</button>
+                        </form>
+                    </details>
+                    <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="profile__btn profile__btn--danger">
-                            Выйти из аккаунта
-                        </button>
+                        <button type="submit" class="profile__btn profile__btn--danger">Выйти из аккаунта</button>
                     </form>
-				</div>
+                </div>
             </div>
         </div>
     </div>
