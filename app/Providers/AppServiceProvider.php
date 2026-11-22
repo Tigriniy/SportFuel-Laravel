@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('manage-catalog', fn (User $user): bool => ! $user->is_blocked && in_array($user->role, ['admin', 'manager'], true)
+        );
+
         ResetPassword::createUrlUsing(function (User $user, string $token): string {
             return rtrim(config('app.url'), '/').route('password.reset', [
                 'token' => $token,

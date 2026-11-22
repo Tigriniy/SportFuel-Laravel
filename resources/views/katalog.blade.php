@@ -100,7 +100,7 @@
                     <div class="catalog-filter__price">
                         <p class="catalog-filter__label">Цена ($)</p>
                         <div class="catalog-filter__slider">
-                            <input type="range" min="0" max="50" value="0" class="catalog-filter__range">
+                            <input disabled type="range" min="0" max="50" value="0" class="catalog-filter__range">
                             <div class="catalog-filter__labels">
                                 <span>$0</span>
                                 <span>$50</span>
@@ -112,27 +112,27 @@
                         <h3 class="catalog-filter__section-title">Категория</h3>
                         <ul class="catalog-filter__list">
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="protein">
+                                <input disabled type="checkbox" id="protein">
                                 <label for="protein">Протеины</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="bcaa">
+                                <input disabled type="checkbox" id="bcaa">
                                 <label for="bcaa">BCAA</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="creatine">
+                                <input disabled type="checkbox" id="creatine">
                                 <label for="creatine">Креатин</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="vitamins">
+                                <input disabled type="checkbox" id="vitamins">
                                 <label for="vitamins">Витамины</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="gainers">
+                                <input disabled type="checkbox" id="gainers">
                                 <label for="gainers">Гейнеры</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="fatBurners">
+                                <input disabled type="checkbox" id="fatBurners">
                                 <label for="fatBurners">Жиросжигатели</label>
                             </li>
                         </ul>
@@ -142,249 +142,57 @@
                         <h3 class="catalog-filter__section-title">Бренд</h3>
                         <ul class="catalog-filter__list">
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="optimum">
+                                <input disabled type="checkbox" id="optimum">
                                 <label for="optimum">Optimum Nutrition</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="maxler">
+                                <input disabled type="checkbox" id="maxler">
                                 <label for="maxler">Maxler</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="siberian">
+                                <input disabled type="checkbox" id="siberian">
                                 <label for="siberian">Siberian</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="usn">
+                                <input disabled type="checkbox" id="usn">
                                 <label for="usn">USN</label>
                             </li>
                             <li class="catalog-filter__item">
-                                <input type="checkbox" id="befirst">
+                                <input disabled type="checkbox" id="befirst">
                                 <label for="befirst">Be First</label>
                             </li>
                         </ul>
                     </div>
 
-                    <p class="catalog-filter__results">Найдено товаров: 8</p>
-                    <button class="catalog-filter__reset">Сбросить фильтры</button>
+                    <p class="catalog-filter__results">Найдено товаров: {{ $products->total() }}</p>
+                    <button disabled class="catalog-filter__reset">Сбросить фильтры</button>
                 </aside>
 
                 <div class="catalog__grid">
-
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/Maxler_creatine1.png" alt="Креатин Maxler" class="product-card__image">
-                            </a>
-
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">Креатин, 150 гр.</p>
-                                <p class="product-card__brand">Maxler</p>
-                            </a>
-
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">1190 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
+                    @forelse ($products as $product)
+                        <div class="product-card">
+                            <div class="product-card__inner">
+                                <div class="product-card__link">
+                                    @if ($product->cover)
+                                        <img src="{{ asset($product->cover->path) }}" alt="{{ $product->cover->alt ?? $product->name }}" class="product-card__image" loading="lazy">
+                                    @endif
+                                </div>
+                                <div class="product-card__link">
+                                    <p class="product-card__name">{{ $product->name }}</p>
+                                    <p class="product-card__brand">{{ $product->brand->name }}</p>
+                                </div>
+                                <div class="product-card__bottom">
+                                    <span class="product-card__price">{{ number_format($product->price, 2, ',', ' ') }} руб.</span>
+                                    <span>{{ $product->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/OptimumNutrition_BCAA1.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">BCAA, 40 таб.</p>
-                                <p class="product-card__brand">OptimumNutrition</p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">3390 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/BeFirst_жиросжигатель1.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">Жиросжигатель, 60 таб.</p>
-                                <p class="product-card__brand">BeFirst </p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">1280 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/BeFirst_Gainer(1000g)1.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">GAINER, 1000 гр.</p>
-                                <p class="product-card__brand">BeFirst</p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">1400 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/BeFirst_Creatine2.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">Креатин, 200 гр.</p>
-                                <p class="product-card__brand">BeFirst</p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">1360 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/Siberian_BCAA1.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">BCAA, 225 гр.</p>
-                                <p class="product-card__brand">Siberian</p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">1240 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/USN_Протеин.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">Протеин, 908 гр.</p>
-                                <p class="product-card__brand">USN</p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">1280 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-card__inner">
-                            <div class="product-card__new">Новинка</div>
-                            <button class="product-card__favorite">
-                                <img src="/assets/images/systemImg/heart_favoroite_button_for_cart.svg" alt="В избранное">
-                            </button>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <img src="/assets/images/product/MaxlerVitamen_Витамины1.png" alt="BCAA OptimumNutrition" class="product-card__image">
-                            </a>
-                            <div class="product-card__rating">
-                                <img src="/assets/images/systemImg/star.svg" alt="★">
-                                <span>4.8</span>
-                                <span class="product-card__reviews">(12 отзывов)</span>
-                            </div>
-                            <a href="carta-tovara.html" class="product-card__link">
-                                <p class="product-card__name">Витамины, 90 таб.</p>
-                                <p class="product-card__brand">Maxler</p>
-                            </a>
-                            <div class="product-card__bottom">
-                                <span class="product-card__price">2160 руб.</span>
-                                <button class="product-card__cart">
-                                    <img src="/assets/images/systemImg/add_cart.svg" alt="В корзину">
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @empty
+                        <p>В каталоге пока нет товаров.</p>
+                    @endforelse
                 </div>
             </div>
+            <x-catalog-pagination :items="$products" />
         </section>
     </div>
 </main>

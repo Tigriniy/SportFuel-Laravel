@@ -97,6 +97,9 @@
         <div class="profile__header">
             <h1 class="profile__title">Личный кабинет</h1>
             <p class="profile__subtitle">Управляйте личными данными и паролем</p>
+            @can('manage-catalog')
+                <a class="profile__btn profile__btn--outline" href="{{ route('admin.home') }}">Управление каталогом</a>
+            @endcan
             @if (session('status'))
                 <p class="profile__subtitle" role="status">{{ session('status') }}</p>
             @endif

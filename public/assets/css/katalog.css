@@ -189,3 +189,13 @@
     padding-top: 15px;
   }
 }
+
+.catalog-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.catalog-pagination a { color: #ff80b0; }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\CatalogReferenceController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
@@ -7,6 +10,20 @@ use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'index');
+Route::get('/katalog.html', [CatalogController::class, 'index'])->name('catalog');
+
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.session', 'can:manage-catalog'])->group(function () {
+    Route::redirect('/', '/admin/products')->name('home');
+    Route::resource('products', ProductController::class)->except('show');
+
+    Route::where(['kind' => 'categories|brands', 'record' => '[0-9]+'])->group(function () {
+        Route::get('/{kind}', [CatalogReferenceController::class, 'index'])->name('references.index');
+        Route::post('/{kind}', [CatalogReferenceController::class, 'store'])->name('references.store');
+        Route::get('/{kind}/{record}/edit', [CatalogReferenceController::class, 'edit'])->name('references.edit');
+        Route::patch('/{kind}/{record}', [CatalogReferenceController::class, 'update'])->name('references.update');
+        Route::delete('/{kind}/{record}', [CatalogReferenceController::class, 'destroy'])->name('references.destroy');
+    });
+});
 
 Route::view('/reg-in.html', 'reg-in')->name('register');
 Route::post('/register', [RegistrationController::class, 'store'])
@@ -44,6 +61,6 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-foreach (['index', 'katalog', 'carta-tovara', 'cart', 'favorite', 'order', 'payment_and_delivery'] as $page) {
+foreach (['index', 'carta-tovara', 'cart', 'favorite', 'order', 'payment_and_delivery'] as $page) {
     Route::view('/'.$page.'.html', $page);
 }
