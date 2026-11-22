@@ -25,6 +25,10 @@
       <form class="auth__form" method="POST" action="{{ route('login.store') }}">
         @csrf
 
+        @if (session('status'))
+          <p role="status">{{ session('status') }}</p>
+        @endif
+
         @if ($errors->any())
           <ul role="alert">
             @foreach ($errors->all() as $error)
@@ -42,6 +46,7 @@
               maxlength="72" autocomplete="current-password" class="auth__input" required>
 
         <button type="submit" class="auth__button auth__button--login">Войти</button>
+        <a href="{{ route('password.request') }}" class="auth__forgot">Забыли пароль?</a>
       </form>
 
       <p class="auth__or">ИЛИ ВОЙТИ ЧЕРЕЗ</p>
