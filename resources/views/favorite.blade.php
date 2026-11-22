@@ -35,10 +35,7 @@
       <a href="payment_and_delivery.html" class="header__nav-link">Доставка</a>
       <a href="order.html" class="header__nav-link">Контакты</a>
 
-      <div class="header__search">
-        <input type="text" placeholder="Поиск" class="header__search-input">
-        <img src="/assets/images/systemImg/search.svg" alt="Поиск">
-      </div>
+      <x-header-search />
 
       <a href="profile.html" class="header__icon-link">
         <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
@@ -71,10 +68,7 @@
         </a>
 
         <div class="header__mobile-controls">
-          <div class="header__mobile-search">
-            <input type="text" placeholder="Поиск...">
-            <img src="/assets/images/systemImg/search.svg" alt="Поиск">
-          </div>
+          <x-header-search mobile />
           <div class="header__mobile-icons">
             <a href="reg-in.html" class="header__mobile-icon">
               <img src="/assets/images/systemImg/profile.svg" alt="Профиль">

@@ -72,6 +72,7 @@
 
 .header__search-input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   outline: none;
@@ -196,6 +197,7 @@
 
 .header__mobile-search input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   outline: none;
@@ -371,3 +373,14 @@
 }
 
 body { padding-top: 102px; }
+
+.header__search-submit {
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.header__mobile-search .header__search-submit img { filter: invert(1); }
+.header__search:focus-within, .header__mobile-search:focus-within { outline: 2px solid #ff4f90; }

@@ -32,10 +32,7 @@
             <a href="payment_and_delivery.html" class="header__nav-link">Доставка</a>
             <a href="order.html" class="header__nav-link">Контакты</a>
 
-            <div class="header__search">
-                <input type="text" placeholder="Поиск" class="header__search-input">
-                <img src="/assets/images/systemImg/search.svg" alt="Поиск">
-            </div>
+            <x-header-search />
 
             <a href="profile.html" class="header__icon-link">
                 <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
@@ -68,10 +65,7 @@
                 </a>
 
                 <div class="header__mobile-controls">
-                    <div class="header__mobile-search">
-                        <input type="text" placeholder="Поиск...">
-                        <img src="/assets/images/systemImg/search.svg" alt="Поиск">
-                    </div>
+                    <x-header-search mobile />
                     <div class="header__mobile-icons">
                         <a href="reg-in.html" class="header__mobile-icon">
                             <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
@@ -96,87 +90,88 @@
 
             <div class="catalog__layout">
 
-                <aside class="catalog-filter">
-                    <div class="catalog-filter__price">
-                        <p class="catalog-filter__label">Цена ($)</p>
-                        <div class="catalog-filter__slider">
-                            <input disabled type="range" min="0" max="50" value="0" class="catalog-filter__range">
-                            <div class="catalog-filter__labels">
-                                <span>$0</span>
-                                <span>$50</span>
-                            </div>
+                <aside class="catalog-filter" aria-label="Фильтры каталога">
+                    <form method="GET" action="{{ route('catalog') }}">
+                        @if ($errors->any())
+                            <ul class="catalog-filter__errors" role="alert">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+
+                        <div class="catalog-filter__section">
+                            <label class="catalog-filter__section-title" for="catalog-q">Название товара</label>
+                            <input class="catalog-filter__input" id="catalog-q" type="search" name="q"
+                                   placeholder="Например, креатин" maxlength="100" value="{{ $filters['q'] ?? '' }}">
                         </div>
-                    </div>
 
-                    <div class="catalog-filter__section">
-                        <h3 class="catalog-filter__section-title">Категория</h3>
-                        <ul class="catalog-filter__list">
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="protein">
-                                <label for="protein">Протеины</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="bcaa">
-                                <label for="bcaa">BCAA</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="creatine">
-                                <label for="creatine">Креатин</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="vitamins">
-                                <label for="vitamins">Витамины</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="gainers">
-                                <label for="gainers">Гейнеры</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="fatBurners">
-                                <label for="fatBurners">Жиросжигатели</label>
-                            </li>
-                        </ul>
-                    </div>
+                        <fieldset class="catalog-filter__section">
+                            <legend class="catalog-filter__section-title">Цена, ₽</legend>
+                            <div class="catalog-filter__prices">
+                                <label for="catalog-min-price">От
+                                    <input class="catalog-filter__input" id="catalog-min-price" type="number" name="min_price"
+                                           min="0" max="99999999.99" step="0.01" value="{{ $filters['min_price'] ?? '' }}">
+                                </label>
+                                <label for="catalog-max-price">До
+                                    <input class="catalog-filter__input" id="catalog-max-price" type="number" name="max_price"
+                                           min="0" max="99999999.99" step="0.01" value="{{ $filters['max_price'] ?? '' }}">
+                                </label>
+                            </div>
+                        </fieldset>
 
-                    <div class="catalog-filter__section">
-                        <h3 class="catalog-filter__section-title">Бренд</h3>
-                        <ul class="catalog-filter__list">
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="optimum">
-                                <label for="optimum">Optimum Nutrition</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="maxler">
-                                <label for="maxler">Maxler</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="siberian">
-                                <label for="siberian">Siberian</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="usn">
-                                <label for="usn">USN</label>
-                            </li>
-                            <li class="catalog-filter__item">
-                                <input disabled type="checkbox" id="befirst">
-                                <label for="befirst">Be First</label>
-                            </li>
-                        </ul>
-                    </div>
+                        @foreach (['category' => ['Категории', $categories], 'brand' => ['Бренды', $brands]] as $field => [$title, $options])
+                            @if ($options->isNotEmpty())
+                                <fieldset class="catalog-filter__section">
+                                    <legend class="catalog-filter__section-title">{{ $title }}</legend>
+                                    <ul class="catalog-filter__list">
+                                        @foreach ($options as $option)
+                                            <li class="catalog-filter__item">
+                                                <label>
+                                                    <input type="checkbox" name="{{ $field }}[]" value="{{ $option->id }}"
+                                                           @checked(in_array($option->id, $filters[$field] ?? []))>
+                                                    {{ $option->name }}
+                                                </label>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </fieldset>
+                            @endif
+                        @endforeach
 
-                    <p class="catalog-filter__results">Найдено товаров: {{ $products->total() }}</p>
-                    <button disabled class="catalog-filter__reset">Сбросить фильтры</button>
+                        <div class="catalog-filter__section">
+                            <label class="catalog-filter__section-title" for="catalog-sort">Сортировка</label>
+                            <select class="catalog-filter__input" id="catalog-sort" name="sort">
+                                @foreach ($sortOptions as $key => $label)
+                                    <option value="{{ $key }}" @selected(($filters['sort'] ?? 'newest') === $key)>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <button class="catalog-filter__apply" type="submit">Применить</button>
+                        <a href="{{ route('catalog') }}" class="catalog-filter__reset">Сбросить фильтры</a>
+                    </form>
                 </aside>
 
-                <div class="catalog__grid">
-                    @forelse ($products as $product)
-                        <x-product-tile :product="$product" />
-                    @empty
-                        <p>В каталоге пока нет товаров.</p>
-                    @endforelse
+                <div class="catalog__results">
+                    <p class="catalog-filter__results">Найдено товаров: {{ $products->total() }}</p>
+                    <div class="catalog__grid">
+                        @forelse ($products as $product)
+                            <x-product-tile :product="$product" />
+                        @empty
+                            @if (array_intersect_key($filters, array_flip(['q', 'category', 'brand', 'min_price', 'max_price'])))
+                                <p class="catalog__empty">
+                                    По этим параметрам товары не найдены.
+                                    <a href="{{ route('catalog') }}">Очистить фильтры</a>
+                                </p>
+                            @else
+                                <p class="catalog__empty">В каталоге пока нет товаров.</p>
+                            @endif
+                        @endforelse
+                    </div>
+                    <x-catalog-pagination :items="$products" />
                 </div>
             </div>
-            <x-catalog-pagination :items="$products" />
         </section>
     </div>
 </main>
