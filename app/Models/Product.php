@@ -32,6 +32,11 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class)->orderBy('id');

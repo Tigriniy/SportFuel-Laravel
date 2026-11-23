@@ -122,7 +122,13 @@
         <h1 class="product__info-title">{{ $product->name }}</h1>
         <p class="product__price">{{ number_format($product->price, 2, ',', ' ') }} ₽</p>
         <p>{{ $product->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</p>
-        <p class="product__info-rating-count">Оценок пока нет</p>
+        <a class="product__info-rating-count" href="#reviews">
+          @if ($rating->total)
+            ★ {{ number_format($rating->average, 1, ',', ' ') }} из 5 · Оценок: {{ $rating->total }}
+          @else
+            Оценок пока нет
+          @endif
+        </a>
 
         <dl class="product__specs">
           <div class="product__specs-row">
@@ -174,6 +180,8 @@
         @endif
       </section>
     @endif
+
+    @include('products.reviews')
 
     @if ($product->relatedProducts->isNotEmpty())
       <section class="product__related">

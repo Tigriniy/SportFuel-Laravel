@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ class CatalogController extends Controller
         ]);
     }
 
-    public function show(Product $product): View
+    public function show(Request $request, Product $product): View
     {
         abort_unless($product->is_active, 404);
 
@@ -29,7 +30,18 @@ class CatalogController extends Controller
             'relatedProducts' => fn ($query) => $query->where('products.is_active', true)->with(['brand', 'cover'])->limit(8),
         ]);
 
-        return view('carta-tovara', ['product' => $product]);
+        $published = $product->reviews()->where('status', Review::APPROVED);
+        $rating = (clone $published)->selectRaw('COUNT(*) as total, AVG(rating) as average')->first();
+        $myReview = $request->user()
+            ? $product->reviews()->where('user_id', $request->user()->id)->first()
+            : null;
+
+        return view('carta-tovara', [
+            'product' => $product,
+            'reviews' => $published->with('user')->latest('id')->paginate(10, pageName: 'reviews_page')->fragment('reviews'),
+            'rating' => $rating,
+            'myReview' => $myReview,
+        ]);
     }
 
     public function index(Request $request): View|RedirectResponse

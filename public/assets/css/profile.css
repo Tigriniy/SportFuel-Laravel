@@ -217,6 +217,11 @@
   color: #FF4F90;
 }
 
+.profile__admin-link {
+  display: inline-block;
+  margin-top: 16px;
+}
+
 .profile__btn--danger {
   background: #ff4f90;
   color: white;

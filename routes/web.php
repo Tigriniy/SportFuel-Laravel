@@ -2,22 +2,30 @@
 
 use App\Http\Controllers\Admin\CatalogReferenceController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CatalogController::class, 'home'])->name('home');
 Route::get('/index.html', [CatalogController::class, 'home']);
 Route::get('/katalog.html', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/products/{product:slug}', [CatalogController::class, 'show'])->name('products.show');
+Route::post('/products/{product:slug}/reviews', [ReviewController::class, 'store'])
+    ->middleware(['auth', 'auth.session', 'throttle:10,1'])->name('reviews.store');
 Route::redirect('/carta-tovara.html', '/katalog.html');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'auth.session', 'can:manage-catalog'])->group(function () {
     Route::redirect('/', '/admin/products')->name('home');
     Route::resource('products', ProductController::class)->except('show');
+    Route::middleware('can:moderate-reviews')->group(function () {
+        Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+        Route::patch('/reviews/{review}', [AdminReviewController::class, 'update'])->name('reviews.update');
+    });
 
     Route::where(['kind' => 'categories|brands', 'record' => '[0-9]+'])->group(function () {
         Route::get('/{kind}', [CatalogReferenceController::class, 'index'])->name('references.index');

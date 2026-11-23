@@ -25,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('manage-catalog', fn (User $user): bool => ! $user->is_blocked && in_array($user->role, ['admin', 'manager'], true)
         );
 
+        Gate::define('moderate-reviews', fn (User $user): bool => $user->can('manage-catalog'));
+
         ResetPassword::createUrlUsing(function (User $user, string $token): string {
             return rtrim(config('app.url'), '/').route('password.reset', [
                 'token' => $token,

@@ -68,3 +68,6 @@ td, th { padding: 0.65rem; border-bottom: 1px solid #373737; vertical-align: top
 @media (max-width: 500px) {
   .product-editor-row { grid-template-columns: 1fr; }
 }
+
+
+.review-comment { white-space: pre-wrap; overflow-wrap: anywhere; }

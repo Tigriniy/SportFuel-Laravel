@@ -351,3 +351,20 @@ input, button {
 .product__related-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 16rem)); gap: 1rem; list-style: none; padding: 0; }
 .product__related-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; background: #202020; border-radius: 12px; color: inherit; }
 .product__related-link img { width: 4rem; height: 4rem; object-fit: cover; border-radius: 12px; }
+
+
+.product-reviews { margin: 2rem 0; }
+.product-reviews a { color: #ff80b0; }
+.product-reviews__form { display: grid; gap: 0.5rem; max-width: 36rem; margin: 1rem 0; }
+.product-reviews__form select, .product-reviews__form textarea {
+  color: inherit;
+  background: #141414;
+  border: 1px solid #777;
+  border-radius: 8px;
+  padding: 0.65rem;
+  font: inherit;
+}
+.product-reviews__form textarea { resize: vertical; }
+.product-reviews__form button { justify-self: start; }
+.product-reviews__item { border-top: 1px solid #555; margin-top: 1rem; padding-top: 1rem; }
+.product-reviews .catalog-pagination { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }

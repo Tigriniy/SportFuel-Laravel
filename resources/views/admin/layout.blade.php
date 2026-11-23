@@ -8,11 +8,14 @@
 </head>
 <body>
     <header class="admin-header">
-        <a class="admin-logo" href="{{ route('admin.home') }}">SportFuel · Управление каталогом</a>
-        <nav aria-label="Управление каталогом">
+        <a class="admin-logo" href="{{ route('admin.home') }}">SportFuel · Управление магазином</a>
+        <nav aria-label="Управление магазином">
             <a href="{{ route('admin.products.index') }}">Товары</a>
             <a href="{{ route('admin.references.index', 'categories') }}">Категории</a>
             <a href="{{ route('admin.references.index', 'brands') }}">Бренды</a>
+            @can('moderate-reviews')
+                <a href="{{ route('admin.reviews.index') }}">Отзывы</a>
+            @endcan
             <a href="{{ route('catalog') }}">Магазин</a>
             <a href="{{ route('profile') }}">Личный кабинет</a>
         </nav>
