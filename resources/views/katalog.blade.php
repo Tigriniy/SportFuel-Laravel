@@ -40,9 +40,7 @@
             <a href="favorite.html" class="header__icon-link">
                 <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
             </a>
-            <a href="cart.html" class="header__icon-link">
-                <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
-            </a>
+            <x-header-cart />
         </nav>
 
         <div class="header__mobile-menu">
@@ -73,9 +71,7 @@
                         <a href="favorite.html" class="header__mobile-icon">
                             <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
                         </a>
-                        <a href="cart.html" class="header__mobile-icon">
-                            <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
-                        </a>
+                        <x-header-cart mobile />
                     </div>
                 </div>
             </div>

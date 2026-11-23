@@ -368,3 +368,13 @@ input, button {
 .product-reviews__form button { justify-self: start; }
 .product-reviews__item { border-top: 1px solid #555; margin-top: 1rem; padding-top: 1rem; }
 .product-reviews .catalog-pagination { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; }
+
+
+.product__cart-form { display: grid; gap: 1rem; }
+.product__cart-options { border: 0; padding: 0; min-width: 0; }
+.product__cart-option { display: grid; gap: .3rem; }
+.product__cart-option input { accent-color: #ff4f90; margin: .2rem auto; }
+.product__cart-actions { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; }
+.product__cart-actions label { display: grid; gap: .25rem; }
+.product__cart-actions input { max-width: 8rem; padding: .5rem; color: #fff; background: #191919; border: 1px solid #777; border-radius: 8px; }
+.product__cart-login, .product__cart-errors { color: #ff80b0; }

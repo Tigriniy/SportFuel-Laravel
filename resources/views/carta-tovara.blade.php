@@ -43,9 +43,7 @@
       <a href="{{ url('favorite.html') }}" class="header__icon-link">
         <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
       </a>
-      <a href="{{ url('cart.html') }}" class="header__icon-link">
-        <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
-      </a>
+      <x-header-cart />
     </nav>
 
     <div class="header__mobile-menu">
@@ -76,9 +74,7 @@
             <a href="{{ url('favorite.html') }}" class="header__mobile-icon">
               <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
             </a>
-            <a href="{{ url('cart.html') }}" class="header__mobile-icon">
-              <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
-            </a>
+            <x-header-cart mobile />
           </div>
         </div>
       </div>
@@ -120,8 +116,10 @@
 
       <div class="product__info">
         <h1 class="product__info-title">{{ $product->name }}</h1>
-        <p class="product__price">{{ number_format($product->price, 2, ',', ' ') }} ₽</p>
-        <p>{{ $product->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</p>
+        @php($stock = $product->variants->isEmpty() ? $product->stock : $product->variants->max('stock'))
+        @php($price = $product->variants->isEmpty() ? $product->price : $product->variants->min('price'))
+        <p class="product__price">{{ $product->variants->count() > 1 ? 'от ' : '' }}{{ number_format($price, 2, ',', ' ') }} ₽</p>
+        <p>{{ $stock > 0 ? 'В наличии' : 'Нет в наличии' }}</p>
         <a class="product__info-rating-count" href="#reviews">
           @if ($rating->total)
             ★ {{ number_format($rating->average, 1, ',', ' ') }} из 5 · Оценок: {{ $rating->total }}
@@ -147,20 +145,7 @@
           @endforeach
         </dl>
 
-        @if ($product->variants->isNotEmpty())
-          <div class="product__variations">
-            <h2 class="product__variations-title">Варианты упаковки</h2>
-            <ul class="product__variations-options">
-              @foreach ($product->variants as $variant)
-                <li class="product__variations-option product__variant-detail">
-                  <span class="product__variations-option-quantity">{{ $variant->title }}</span>
-                  <span class="product__variations-option-price">{{ number_format($variant->price, 2, ',', ' ') }} ₽</span>
-                  <small>{{ $variant->stock > 0 ? 'В наличии' : 'Нет в наличии' }}</small>
-                </li>
-              @endforeach
-            </ul>
-          </div>
-        @endif
+        @include('products.cart-control')
       </div>
     </section>
 

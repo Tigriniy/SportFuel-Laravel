@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CatalogReferenceController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PasswordResetController;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [CatalogController::class, 'home'])->name('home');
 Route::get('/index.html', [CatalogController::class, 'home']);
+Route::get('/cart.html', [CartController::class, 'index'])->name('cart.index');
 Route::get('/katalog.html', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/products/{product:slug}', [CatalogController::class, 'show'])->name('products.show');
 Route::post('/products/{product:slug}/reviews', [ReviewController::class, 'store'])
@@ -59,6 +61,9 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'auth.session'])->group(function () {
+    Route::post('/products/{product:slug}/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::patch('/cart/items/{item}', [CartController::class, 'update'])->whereNumber('item')->name('cart.update');
+    Route::delete('/cart/items/{item}', [CartController::class, 'destroy'])->whereNumber('item')->name('cart.destroy');
     Route::get('/profile.html', [ProfileController::class, 'show'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])
         ->middleware('throttle:10,1')
@@ -72,6 +77,6 @@ Route::post('/logout', [LoginController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-foreach (['cart', 'favorite', 'order', 'payment_and_delivery'] as $page) {
+foreach (['favorite', 'order', 'payment_and_delivery'] as $page) {
     Route::view('/'.$page.'.html', $page);
 }

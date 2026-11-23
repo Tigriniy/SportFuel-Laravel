@@ -43,9 +43,7 @@
       <a href="favorite.html" class="header__icon-link">
         <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
       </a>
-      <a href="cart.html" class="header__icon-link">
-        <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
-      </a>
+      <x-header-cart />
     </nav>
 
     <div class="header__mobile-menu">
@@ -76,9 +74,7 @@
             <a href="favorite.html" class="header__mobile-icon">
               <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
             </a>
-            <a href="cart.html" class="header__mobile-icon">
-              <img src="/assets/images/systemImg/cart.svg" alt="Корзина">
-            </a>
+            <x-header-cart mobile />
           </div>
         </div>
       </div>
@@ -90,14 +86,83 @@
   <div class="cart__container">
     <h1 class="cart__title">Корзина</h1>
 
-    <div class="cart__empty">
-      <img src="/assets/images/systemImg/cart.svg" alt="Корзина пуста" class="cart__empty-icon">
-      <h2 class="cart__empty-title">Корзина пуста</h2>
-      <p class="cart__empty-text">
-        Добавляйте товары в корзину, для оформления заказа
-      </p>
-      <a href="katalog.html" class="cart__empty-button">Перейти в каталог</a>
-    </div>
+    @if (session('cart_status'))
+      <p class="cart__notice" role="status">{{ session('cart_status') }}</p>
+    @endif
+    @if ($errors->cart->any())
+      <ul class="cart__notice cart__notice--error" role="alert">
+        @foreach ($errors->cart->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    @endif
+
+    @if ($items->isEmpty())
+      <div class="cart__empty">
+        <img src="{{ asset('assets/images/systemImg/cart.svg') }}" alt="" class="cart__empty-icon">
+        <h2 class="cart__empty-title">Корзина пуста</h2>
+        @guest
+          <p class="cart__empty-text">Войди, чтобы добавлять товары в корзину.</p>
+          <a href="{{ route('login') }}" class="cart__empty-button">Войти</a>
+        @else
+          <p class="cart__empty-text">Добавь товары из каталога, чтобы сохранить их в корзине.</p>
+          <a href="{{ route('catalog') }}" class="cart__empty-button">Перейти в каталог</a>
+        @endguest
+      </div>
+    @else
+      <div class="cart__lines">
+        @foreach ($items as $item)
+          @php($limit = $item->availableQuantity())
+          <article class="cart__line">
+            @if ($item->product->cover)
+              <img class="cart__photo" src="{{ asset($item->product->cover->path) }}" alt="">
+            @endif
+            <div class="cart__line-info">
+              <h2>
+                @if ($item->product->is_active)
+                  <a href="{{ route('products.show', $item->product->slug) }}">{{ $item->product->name }}</a>
+                @else
+                  {{ $item->product->name }}
+                @endif
+              </h2>
+              @if ($item->variant)
+                <p>{{ $item->variant->title }}</p>
+              @endif
+              <p>{{ number_format($item->unitPrice(), 2, ',', ' ') }} ₽ за шт.</p>
+              @if ($limit < 1)
+                <p class="cart__availability">Позиция сейчас недоступна.</p>
+              @elseif ($limit < $item->quantity)
+                <p class="cart__availability">Доступно {{ $limit }} шт. Уменьши количество, чтобы учесть позицию в итоге.</p>
+              @endif
+            </div>
+            <div class="cart__line-actions">
+              @if ($limit > 0)
+                <form method="POST" action="{{ route('cart.update', $item) }}">
+                  @csrf
+                  @method('PATCH')
+                  <label for="quantity-{{ $item->id }}">Количество</label>
+                  <input id="quantity-{{ $item->id }}" name="quantity" type="number" min="1" max="{{ $limit }}"
+                         value="{{ min($item->quantity, $limit) }}" required>
+                  <button type="submit">Обновить</button>
+                </form>
+              @endif
+              <form method="POST" action="{{ route('cart.destroy', $item) }}">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Удалить</button>
+              </form>
+            </div>
+            @if ($limit >= $item->quantity)
+              <strong>{{ number_format($item->subtotalInKopecks() / 100, 2, ',', ' ') }} ₽</strong>
+            @endif
+          </article>
+        @endforeach
+      </div>
+      <div class="cart__total">
+        <a href="{{ route('catalog') }}">Вернуться в каталог</a>
+        <strong>Итого: {{ number_format($total / 100, 2, ',', ' ') }} ₽</strong>
+      </div>
+    @endif
   </div>
 </main>
 

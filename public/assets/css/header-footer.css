@@ -384,3 +384,20 @@ body { padding-top: 102px; }
 }
 .header__mobile-search .header__search-submit img { filter: invert(1); }
 .header__search:focus-within, .header__mobile-search:focus-within { outline: 2px solid #ff4f90; }
+
+
+.header__cart { position: relative; display: inline-flex; }
+.header__cart-count {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  min-width: 18px;
+  padding: 1px 4px;
+  border-radius: 10px;
+  background: #ff4f90;
+  color: #151515;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 700;
+  text-align: center;
+}
