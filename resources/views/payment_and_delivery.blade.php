@@ -81,26 +81,26 @@
                 <img src="/assets/images/systemImg/car.svg" alt="Курьер">
                 <h3 class="delivery-method__title">Курьерская доставка</h3>
                 <p class="delivery-method__text">Доставка по Томску и ТО в течение 1-2 дней</p>
-                <span class="delivery-method__price">От 300 ₽</span>
+                <span class="delivery-method__price">300 ₽</span>
             </div>
             <div class="delivery-method">
                 <img src="/assets/images/systemImg/layer1.svg" alt="ПВЗ">
                 <h3 class="delivery-method__title">Пункты выдачи</h3>
                 <p class="delivery-method__text">Более 500 пунктов выдачи по всей России</p>
-                <span class="delivery-method__price">От 300 ₽</span>
+                <span class="delivery-method__price">300 ₽</span>
             </div>
             <div class="delivery-method">
                 <img src="/assets/images/systemImg/Значок - Почта России.svg" alt="Почта">
                 <h3 class="delivery-method__title">Почта России</h3>
                 <p class="delivery-method__text">Доставка в любой регион страны</p>
-                <span class="delivery-method__price">От 250 ₽</span>
+                <span class="delivery-method__price">250 ₽</span>
             </div>
         </div>
 
         <section class="delivery__terms">
             <h2 class="delivery__terms-title">Условия доставки</h2>
             <ul class="delivery__terms-list">
-                <li>Бесплатная доставка при заказе от 3000 ₽</li>
+                <li>Стандартная доставка бесплатна при заказе от 3000 ₽</li>
                 <li>Экспресс-доставка в пределах ТО — 500 ₽</li>
                 <li>Отслеживание заказа в личном кабинете</li>
                 <li>Доставка в регионы — от 3 до 7 рабочих дней</li>

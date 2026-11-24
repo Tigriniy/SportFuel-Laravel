@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ class CartController extends Controller
         ], $this->quantityMessages());
 
         DB::transaction(function () use ($request, $product, $data): void {
+            User::query()->lockForUpdate()->findOrFail($request->user()->id);
             $product = Product::query()->lockForUpdate()->findOrFail($product->id);
             $variantId = $data['variant_id'] ?? null;
             $key = $variantId === null ? 'product:'.$product->id : 'variant:'.$variantId;
@@ -66,6 +68,7 @@ class CartController extends Controller
         ], $this->quantityMessages());
 
         DB::transaction(function () use ($request, $item, $productId, $data): void {
+            User::query()->lockForUpdate()->findOrFail($request->user()->id);
             $product = Product::query()->lockForUpdate()->findOrFail($productId);
             $entry = $request->user()->cartItems()->findOrFail($item);
 
@@ -82,6 +85,7 @@ class CartController extends Controller
         $productId = $request->user()->cartItems()->findOrFail($item)->product_id;
 
         DB::transaction(function () use ($request, $item, $productId): void {
+            User::query()->lockForUpdate()->findOrFail($request->user()->id);
             Product::query()->lockForUpdate()->findOrFail($productId);
             $request->user()->cartItems()->findOrFail($item)->delete();
         }, 3);

@@ -157,6 +157,11 @@
       <div class="cart__total">
         <a href="{{ route('catalog') }}">Вернуться в каталог</a>
         <strong>Итого: {{ number_format($total / 100, 2, ',', ' ') }} ₽</strong>
+        @if ($items->every(fn ($item) => $item->availableQuantity() >= $item->quantity))
+          <a class="cart__empty-button cart__checkout-button" href="{{ route('checkout.show') }}">Оформить заказ</a>
+        @else
+          <span>Проверь недоступные позиции перед оформлением.</span>
+        @endif
       </div>
     @endif
   </div>

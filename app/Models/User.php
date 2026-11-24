@@ -28,6 +28,11 @@ class User extends Authenticatable
         return $this->favorites()->whereHas('product', fn ($query) => $query->where('is_active', true));
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
