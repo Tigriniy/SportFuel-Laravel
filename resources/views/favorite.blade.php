@@ -40,9 +40,7 @@
       <a href="profile.html" class="header__icon-link">
         <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
       </a>
-      <a href="favorite.html" class="header__icon-link">
-        <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
-      </a>
+      <x-header-favorite />
       <x-header-cart />
     </nav>
 
@@ -71,9 +69,7 @@
             <a href="reg-in.html" class="header__mobile-icon">
               <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
             </a>
-            <a href="favorite.html" class="header__mobile-icon">
-              <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
-            </a>
+            <x-header-favorite mobile />
             <x-header-cart mobile />
           </div>
         </div>
@@ -86,14 +82,31 @@
   <div class="favorite__container">
     <h1 class="favorite__title">Избранное</h1>
 
-    <div class="favorite__empty">
-      <img src="/assets/images/systemImg/favorite.svg" alt="Избранное пусто" class="favorite__empty-icon">
-      <h2 class="favorite__empty-title">Список избранного пуст</h2>
-      <p class="favorite__empty-text">
-        Добавляйте товары в избранное, чтобы не потерять их
-      </p>
-      <a href="katalog.html" class="favorite__empty-button">Перейти в каталог</a>
-    </div>
+    @if (session('favorite_status'))
+      <p class="favorite__notice" role="status">{{ session('favorite_status') }}</p>
+    @endif
+
+    <x-cart-errors />
+    @if ($favorites?->isNotEmpty())
+      <div class="favorite__grid">
+        @foreach ($favorites as $favorite)
+          <x-product-tile :product="$favorite->product" :saved="true" />
+        @endforeach
+      </div>
+      <x-catalog-pagination :items="$favorites" />
+    @else
+      <div class="favorite__empty">
+        <img src="{{ asset('assets/images/systemImg/favorite.svg') }}" alt="" class="favorite__empty-icon">
+        <h2 class="favorite__empty-title">Список избранного пуст</h2>
+        @guest
+          <p class="favorite__empty-text">Войди, чтобы сохранять товары в избранном.</p>
+          <a href="{{ route('login') }}" class="favorite__empty-button">Войти</a>
+        @else
+          <p class="favorite__empty-text">Нажми на сердечко у товара, чтобы сохранить его здесь.</p>
+          <a href="{{ route('catalog') }}" class="favorite__empty-button">Перейти в каталог</a>
+        @endguest
+      </div>
+    @endif
   </div>
 </main>
 

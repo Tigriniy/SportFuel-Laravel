@@ -133,11 +133,27 @@ button { cursor: pointer; border: none; background: transparent; font-family: in
   overflow: hidden;
 }
 
+.catalog__grid, .favorite__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 40px);
+}
+
+@media (max-width: 1240px) {
+  .catalog__grid, .favorite__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .catalog__grid, .favorite__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
 .product-card__inner {
-  position: relative;
-  width: 80%;
-  margin: 0 auto;
-  padding: 60px 0px 20px 0px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(12px, 1.7vw, 24px);
+  text-align: left;
+  overflow-wrap: anywhere;
 }
 
 .product-card__new {
@@ -167,20 +183,28 @@ button { cursor: pointer; border: none; background: transparent; font-family: in
   height: 41px;
 }
 
-.product-card__image {
-  width: 100%;
-  margin-top: 10px;
-  object-fit: cover;
+.product-card__media { position: relative; }
+
+.product-card__media-link {
+  display: block;
+  aspect-ratio: 1;
   border-radius: 25px;
+  overflow: hidden;
+  background: #232323;
+}
+
+.product-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .product-card__placeholder {
   display: grid;
   place-items: center;
-  min-height: 10rem;
-  margin-top: 10px;
-  background: #232323;
-  border-radius: 25px;
+  height: 100%;
+  padding: 1rem;
 }
 
 .product-card__rating {
@@ -214,9 +238,12 @@ button { cursor: pointer; border: none; background: transparent; font-family: in
 
 .product-card__bottom {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: 15px;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 15px;
 }
 
 .product-card__price {
@@ -333,3 +360,19 @@ button { cursor: pointer; border: none; background: transparent; font-family: in
 
   }
 
+
+.product-card__availability { color: #bcbcbc; font-size: 0.9rem; }
+
+.product-card__quick-cart {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.product-card__quick-cart img { display: block; width: 41px; height: 41px; }
+.product-card__quick-cart:hover { opacity: 0.85; }
+.product-card__quick-cart:focus-visible { outline: 2px solid #ff80b0; outline-offset: 3px; }
+.product-card__cart-errors { color: #ff9bbc; margin-bottom: 1rem; }

@@ -12,7 +12,7 @@
     @csrf
 
     @if ($product->variants->isNotEmpty())
-        <fieldset class="product__variations product__cart-options">
+        <fieldset id="packaging" class="product__variations product__cart-options">
             <legend class="product__variations-title">Варианты упаковки</legend>
             <ul class="product__variations-options">
                 @foreach ($product->variants as $variant)

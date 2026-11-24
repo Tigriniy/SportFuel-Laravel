@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CatalogController extends Controller
 {
-    public function home(): View
+    public function home(Request $request): View
     {
         return view('index', [
-            'products' => Product::with(['brand', 'cover'])->where('is_active', true)->latest('id')->limit(4)->get(),
+            'products' => Product::with(['brand', 'cover', 'variants'])->withFavoriteStatus($request->user())->where('is_active', true)->latest('id')->limit(4)->get(),
         ]);
     }
 
@@ -41,6 +41,7 @@ class CatalogController extends Controller
             'reviews' => $published->with('user')->latest('id')->paginate(10, pageName: 'reviews_page')->fragment('reviews'),
             'rating' => $rating,
             'myReview' => $myReview,
+            'isFavorite' => $request->user()?->favorites()->where('product_id', $product->id)->exists() ?? false,
         ]);
     }
 
@@ -88,7 +89,7 @@ class CatalogController extends Controller
                 ->withErrors(['min_price' => 'Цена «от» должна быть меньше или равна цене «до».']);
         }
 
-        $products = Product::with(['brand', 'cover'])->where('is_active', true);
+        $products = Product::with(['brand', 'cover', 'variants'])->withFavoriteStatus($request->user())->where('is_active', true);
 
         if (isset($filters['q'])) {
             $term = strtr($filters['q'], ['!' => '!!', '%' => '!%', '_' => '!_']);

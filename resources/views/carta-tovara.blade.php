@@ -40,9 +40,7 @@
       <a href="{{ url('profile.html') }}" class="header__icon-link">
         <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
       </a>
-      <a href="{{ url('favorite.html') }}" class="header__icon-link">
-        <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
-      </a>
+      <x-header-favorite />
       <x-header-cart />
     </nav>
 
@@ -71,9 +69,7 @@
             <a href="{{ route('profile') }}" class="header__mobile-icon">
               <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
             </a>
-            <a href="{{ url('favorite.html') }}" class="header__mobile-icon">
-              <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
-            </a>
+            <x-header-favorite mobile />
             <x-header-cart mobile />
           </div>
         </div>
@@ -115,7 +111,13 @@
       </div>
 
       <div class="product__info">
-        <h1 class="product__info-title">{{ $product->name }}</h1>
+        <div class="product__title-row">
+          <h1 class="product__info-title">{{ $product->name }}</h1>
+          <x-favorite-toggle :product="$product" :saved="$isFavorite" />
+        </div>
+        @if (session('favorite_status'))
+          <p role="status">{{ session('favorite_status') }}</p>
+        @endif
         @php($stock = $product->variants->isEmpty() ? $product->stock : $product->variants->max('stock'))
         @php($price = $product->variants->isEmpty() ? $product->price : $product->variants->min('price'))
         <p class="product__price">{{ $product->variants->count() > 1 ? 'от ' : '' }}{{ number_format($price, 2, ',', ' ') }} ₽</p>

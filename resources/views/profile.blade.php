@@ -41,9 +41,7 @@
             <a href="reg-in.html" class="header__icon-link">
                 <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
             </a>
-            <a href="favorite.html" class="header__icon-link">
-                <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
-            </a>
+            <x-header-favorite />
             <x-header-cart />
         </nav>
 
@@ -72,9 +70,7 @@
                         <a href="reg-in.html" class="header__mobile-icon">
                             <img src="/assets/images/systemImg/profile.svg" alt="Профиль">
                         </a>
-                        <a href="favorite.html" class="header__mobile-icon">
-                            <img src="/assets/images/systemImg/favorite.svg" alt="Избранное">
-                        </a>
+                        <x-header-favorite mobile />
                         <x-header-cart mobile />
                     </div>
                 </div>

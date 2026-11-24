@@ -151,3 +151,10 @@
     padding: 14px;
   }
 }
+.favorite__grid {
+  width: min(100%, 68rem);
+  margin: 0 auto;
+}
+.favorite__notice { margin-bottom: 1rem; }
+.favorite .catalog-pagination { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+.favorite .catalog-pagination a { color: #ff80b0; }

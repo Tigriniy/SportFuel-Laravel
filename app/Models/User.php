@@ -18,6 +18,16 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function visibleFavorites(): HasMany
+    {
+        return $this->favorites()->whereHas('product', fn ($query) => $query->where('is_active', true));
+    }
+
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
