@@ -196,3 +196,14 @@
   .checkout__grid { grid-template-columns: 1fr; }
   .checkout__grid section { grid-row: 1; }
 }
+
+.order-history__details { margin-top: .75rem; }
+.order-history__details dt { margin-top: .65rem; color: #d0d0d0; }
+.order-history__details dd { margin: .15rem 0 0; white-space: pre-wrap; }
+.order-history .checkout__panel { overflow-wrap: anywhere; }
+.order-history .catalog-pagination { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+.order-history .catalog-pagination a, .cart__notice a { color: #ff80b0; }
+
+@media (max-width: 760px) {
+  .order-history .checkout__grid section { grid-row: auto; }
+}

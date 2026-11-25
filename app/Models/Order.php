@@ -35,6 +35,14 @@ class Order extends Model
         return self::DELIVERY[$method]['fee'];
     }
 
+    public function statusLabel(): string
+    {
+        return match ($this->status) {
+            self::PENDING => 'Ожидает обработки',
+            default => 'Статус уточняется',
+        };
+    }
+
     protected function casts(): array
     {
         return ['total_amount' => 'decimal:2', 'delivery_fee' => 'decimal:2'];

@@ -83,7 +83,12 @@
     <h1 class="cart__title">Корзина</h1>
 
     @if (session('cart_status'))
-      <p class="cart__notice" role="status">{{ session('cart_status') }}</p>
+      <p class="cart__notice" role="status">
+        {{ session('cart_status') }}
+        @auth
+          <a href="{{ route('orders.index') }}">Мои заказы</a>
+        @endauth
+      </p>
     @endif
     @if ($errors->cart->any())
       <ul class="cart__notice cart__notice--error" role="alert">

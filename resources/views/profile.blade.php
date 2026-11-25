@@ -98,6 +98,7 @@
                     </div>
                     <h2 class="profile__name">{{ $fullName }}</h2>
                     <p class="profile__email">{{ $user->email }}</p>
+                    <a class="profile__btn profile__btn--outline" href="{{ route('orders.index') }}">Мои заказы</a>
                 </div>
                 <div class="profile__card">
                     <h3 class="profile__card-title">Контактные данные</h3>

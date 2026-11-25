@@ -62,6 +62,18 @@ class CheckoutTest extends TestCase
             'order_id' => $order->id, 'product_id' => null, 'variant_id' => null,
             'product_name' => 'Тестовый креатин', 'variant_title' => '500 г',
         ]);
+
+        $this->get(route('orders.index'))->assertOk()
+            ->assertSee(route('orders.show', $order))
+            ->assertSee('Ожидает обработки')
+            ->assertSee('3 050,45 ₽');
+        $this->get(route('orders.show', $order))->assertOk()
+            ->assertSee('Тестовый креатин')
+            ->assertSee('500 г')
+            ->assertSee('650,10 ₽ × 2 шт.')
+            ->assertSee('Почта России')
+            ->assertSee('Томск, ул. Ленина, д. 5')
+            ->assertSee('Доставка: 250,00 ₽');
     }
 
     public function test_checkout_leaves_cart_and_stock_untouched_when_price_or_availability_changes(): void
@@ -85,6 +97,29 @@ class CheckoutTest extends TestCase
         $this->assertDatabaseCount('cart_items', 2);
         $this->assertDatabaseCount('orders', 0);
         $this->assertDatabaseCount('order_items', 0);
+    }
+
+    public function test_order_history_only_shows_the_signed_in_customers_orders(): void
+    {
+        $owner = $this->user();
+        $order = $owner->orders()->create([
+            'status' => Order::PENDING, 'delivery_method' => 'courier', 'payment_method' => 'cash',
+            'delivery_address' => 'Адрес покупателя', 'contact_phone' => '79990001122',
+            'total_amount' => '4500.00',
+        ]);
+        $other = $owner->replicate()->fill(['login' => 'OtherBuyer', 'email' => 'other@example.com']);
+        $other->save();
+        $index = route('orders.index');
+        $detail = route('orders.show', $order);
+
+        $this->get($index)->assertRedirect(route('login'));
+        $this->get($detail)->assertRedirect(route('login'));
+
+        $this->actingAs($other)->get($index)->assertOk()
+            ->assertSee('У тебя пока нет заказов.')
+            ->assertDontSee($detail);
+        $this->get($detail)->assertNotFound();
+        $this->get(route('profile'))->assertOk()->assertSee($index);
     }
 
     private function payload(string $quote): array
